@@ -24,7 +24,7 @@ class Query(graphene.ObjectType):
         u = info.context.user
         if u.is_anonymous:
             raise GraphQLError("Not Logged In!")
-        return UserProfile.objects.all().order_by("max_score")
+        return UserProfile.objects.all().order_by("-max_score")
 
     def resolve_me(self, info):
         u = info.context.user
@@ -56,7 +56,7 @@ class CreateUser(graphene.Mutation):
 
         profile = UserProfile.objects.create(user=user, name=kwargs.get(
             "name"),  gender=kwargs.get("gender"), age=kwargs.get("age"), height=kwargs.get("height"), weight=kwargs.get("weight"))
-        profile.bmi = kwargs.get("weight")/pow(kwargs.get("height"), 2)
+        profile.bmi = kwargs.get("weight")*100*100/pow(kwargs.get("height"), 2)
         profile.save()
 
         return CreateUser(user=user)

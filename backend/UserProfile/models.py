@@ -20,7 +20,7 @@ class UserProfile(models.Model):
     name = models.CharField(null=True, default="User",
                             blank=True, max_length=255)
     gender = models.CharField(
-        null=True, blank=True, choices=gender_choices, max_length=6)
+        null=True, blank=True, choices=gender_choices, max_length=6,default="M")
     image = models.URLField(
         null=True, default="https://firebasestorage.googleapis.com/v0/b/duo-louge.appspot.com/o/user_default.png?alt=media&token=a27eb92b-8292-4e0c-84d3-5db84b1b18d0")
     age = models.IntegerField(default=1, validators=[
@@ -29,8 +29,8 @@ class UserProfile(models.Model):
         MinValueValidator(0)])
     height = models.IntegerField(validators=[
         MinValueValidator(0)])
-    bmi = models.DecimalField(default=0)
-    max_score = models.DecimalField(default=0, validators=[
+    bmi = models.DecimalField(default=0, max_digits=4, decimal_places=2)
+    max_score = models.IntegerField(default=0, validators=[
         MinValueValidator(0)])
     game_life = models.IntegerField(default=3, validators=[
         MinValueValidator(0)])
