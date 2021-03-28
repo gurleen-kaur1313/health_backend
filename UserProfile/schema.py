@@ -119,9 +119,11 @@ class AddDailyNutrition(graphene.Mutation):
     info = graphene.Field(Nutrition)
 
     class Arguments:
-        protein = graphene.String()
-        carbs = graphene.String()
-        fats = graphene.String()
+        protein = graphene.Int()
+        carbs = graphene.Int()
+        fats = graphene.Int()
+        vitamins = graphene.Int()
+        minerals = graphene.Int()
         food_name = graphene.String()
         
 
@@ -134,6 +136,8 @@ class AddDailyNutrition(graphene.Mutation):
         new.protein = kwargs.get("protein")
         new.carbs = kwargs.get("carbs")
         new.fats = kwargs.get("fats")
+        new.vitamins = kwargs.get("vitamins")
+        new.minerals = kwargs.get("minerals")
         new.food_name = kwargs.get("food_name")
 
         new.save()
