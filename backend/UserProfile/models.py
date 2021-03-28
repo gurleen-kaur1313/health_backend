@@ -39,3 +39,20 @@ class UserProfile(models.Model):
 
     def __str__(self):
         return self.user.email
+
+
+class DailyNutritions(models.Model):
+    """model to store daily nutrition intake of the user"""
+    id = models.UUIDField(default=uuid.uuid4, primary_key=True, editable=False)
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL, null=True, on_delete=models.CASCADE)
+    Date = models.DateTimeField(auto_now=True, blank=True)
+    protein = models.CharField(null=True, blank=True, max_length=20)
+    carbs = models.CharField(null=True, blank=True, max_length=20)
+    fats = models.CharField(null=True, blank=True, max_length=20)
+    food_name = models.CharField(null=True, blank=True, max_length=100)
+
+    def __str__(self):
+        return self.user.email
+
+
