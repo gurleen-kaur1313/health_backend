@@ -46,13 +46,13 @@ class DailyNutritions(models.Model):
     id = models.UUIDField(default=uuid.uuid4, primary_key=True, editable=False)
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL, null=True, on_delete=models.CASCADE)
-    Date = models.DateTimeField(auto_now=True, blank=True)
-    protein = models.IntegerField(validators=[MinValueValidator(0), MaxValueValidator(100)])
-    carbs = models.IntegerField(validators=[MinValueValidator(0), MaxValueValidator(100)])
-    fats = models.IntegerField(validators=[MinValueValidator(0), MaxValueValidator(100)])
-    vitamins = models.IntegerField(validators=[MinValueValidator(0), MaxValueValidator(100)])
-    minerals = models.IntegerField(validators=[MinValueValidator(0), MaxValueValidator(100)])
-    food_name = models.CharField(null=True, blank=True, max_length=100)
+    Date = models.DateTimeField(auto_now=True)
+    protein = models.IntegerField(default=0,validators=[MinValueValidator(0), MaxValueValidator(100)])
+    carbs = models.IntegerField(default=0,validators=[MinValueValidator(0), MaxValueValidator(100)])
+    fats = models.IntegerField(default=0,validators=[MinValueValidator(0), MaxValueValidator(100)])
+    vitamins = models.IntegerField(default=0,validators=[MinValueValidator(0), MaxValueValidator(100)])
+    minerals = models.IntegerField(default=0,validators=[MinValueValidator(0), MaxValueValidator(100)])
+    food_name = models.CharField(null=True, blank=True, max_length=255)
 
     def __str__(self):
         return self.user.email
