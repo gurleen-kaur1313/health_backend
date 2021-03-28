@@ -28,7 +28,7 @@ SECRET_KEY = os.environ.get(
 DEBUG = bool(os.environ.get("DEBUG", 'True'))
 
 ALLOWED_HOSTS = [
-    'localhost', 'Backend-env.eba-zykqqumy.ap-south-1.elasticbeanstalk.com', '127.0.0.1:8000']
+    'localhost', 'backend.ap-southeast-1.elasticbeanstalk.com', '127.0.0.1:8000']
 
 
 # Application definition
