@@ -27,7 +27,7 @@ SECRET_KEY = os.environ.get(
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = bool(os.environ.get("DEBUG", 'True'))
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['localhost','Veehacks-backend.ap-south-1.elasticbeanstalk.com','127.0.0.1:8000']
 
 
 # Application definition
