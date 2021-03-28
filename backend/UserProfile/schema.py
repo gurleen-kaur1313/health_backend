@@ -62,16 +62,12 @@ class CreateUser(graphene.Mutation):
         return CreateUser(user=user)
 
 
-class UpdateUser(graphene.Mutation):
+class UpdateScore(graphene.Mutation):
     update = graphene.Field(Profile)
 
     class Arguments:
-        name = graphene.String(required=False)
-        image = graphene.String(required=False)
-        gender = graphene.String(required=False)
-        city = graphene.String(required=False)
-        state = graphene.String(required=False)
-        country = graphene.String(required=False)
+        life = graphene.Int(required=False)
+        score = graphene.Int(required=False)
 
     def mutate(self, info, **kwargs):
 
@@ -82,29 +78,14 @@ class UpdateUser(graphene.Mutation):
 
         profile = UserProfile.objects.get(user=user)
 
-        name = kwargs.get("name")
-        image = kwargs.get("image")
-        gender = kwargs.get("gender")
-        city = kwargs.get("city")
-        state = kwargs.get("state")
-        country = kwargs.get("country")
+        score = kwargs.get("name")
+        lifes = kwargs.get("image")
 
-        if image is not None:
-            profile.image = image
-        if gender is not None:
-            profile.gender = gender
-        if name is not None:
-            profile.name = name
-        if city is not None:
-            profile.city = city
-        if state is not None:
-            profile.state = state
-        if country is not None:
-            profile.country = country
-
+        profile.max_score = score
+        profile.game_life = lifes
         profile.save()
 
-        return UpdateUser(update=profile)
+        return UpdateScore(update=profile)
 
 
 class DeleteUser(graphene.Mutation):
@@ -124,5 +105,5 @@ class DeleteUser(graphene.Mutation):
 
 class Mutation(graphene.ObjectType):
     create_user = CreateUser.Field()
-    update_user = UpdateUser.Field()
+    update_user = UpdateScore.Field()
     delete_user = DeleteUser.Field()
