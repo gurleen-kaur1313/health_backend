@@ -78,8 +78,8 @@ class UpdateScore(graphene.Mutation):
 
         profile = UserProfile.objects.get(user=user)
 
-        score = kwargs.get("name")
-        lifes = kwargs.get("image")
+        score = kwargs.get("score")
+        lifes = kwargs.get("life")
 
         profile.max_score = score
         profile.game_life = lifes
