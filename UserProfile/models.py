@@ -47,9 +47,11 @@ class DailyNutritions(models.Model):
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL, null=True, on_delete=models.CASCADE)
     Date = models.DateTimeField(auto_now=True, blank=True)
-    protein = models.CharField(null=True, blank=True, max_length=20)
-    carbs = models.CharField(null=True, blank=True, max_length=20)
-    fats = models.CharField(null=True, blank=True, max_length=20)
+    protein = models.IntegerField(validators=[MinValueValidator(0), MaxValueValidator(100)])
+    carbs = models.IntegerField(validators=[MinValueValidator(0), MaxValueValidator(100)])
+    fats = models.IntegerField(validators=[MinValueValidator(0), MaxValueValidator(100)])
+    vitamins = models.IntegerField(validators=[MinValueValidator(0), MaxValueValidator(100)])
+    minerals = models.IntegerField(validators=[MinValueValidator(0), MaxValueValidator(100)])
     food_name = models.CharField(null=True, blank=True, max_length=100)
 
     def __str__(self):
