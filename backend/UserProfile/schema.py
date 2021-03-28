@@ -31,7 +31,7 @@ class Query(graphene.ObjectType):
             raise GraphQLError("Not Logged In!")
         return UserProfile.objects.all().order_by("-max_score")
 
-    def resolve_me(self, info):
+    def resolve_nutrition(self, info):
         u = info.context.user
         if u.is_anonymous:
             raise GraphQLError("Not Logged In!")
