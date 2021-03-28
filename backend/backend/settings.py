@@ -28,7 +28,7 @@ SECRET_KEY = os.environ.get(
 DEBUG = bool(os.environ.get("DEBUG", 'True'))
 
 ALLOWED_HOSTS = [
-    'localhost', 'veehacksbackend.ap-south-1.elasticbeanstalk.com', '127.0.0.1:8000']
+    'localhost', 'Backend-env.eba-zykqqumy.ap-south-1.elasticbeanstalk.com', '127.0.0.1:8000']
 
 
 # Application definition
@@ -146,5 +146,5 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
-STATIC_ROOT = os.path.join(BASE_DIR, "..", "www", "static")
+STATIC_ROOT = os.path.join(BASE_DIR, "static")
 STATIC_URL = '/static/'
