@@ -41,7 +41,7 @@ class Query(graphene.ObjectType):
         u = info.context.user
         if u.is_anonymous:
             raise GraphQLError("Not Logged In!")
-        return DailyNutritions.objects.filter(user=u).order_by("Date")
+        return DailyNutritions.objects.filter(user=u).order_by("-Date")
 
 
 class CreateUser(graphene.Mutation):
