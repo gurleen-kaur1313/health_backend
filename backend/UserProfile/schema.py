@@ -18,29 +18,13 @@ class UserType(DjangoObjectType):
 
 class Query(graphene.ObjectType):
     me = graphene.Field(Profile)
-    locationUser = graphene.List(Profile, location=graphene.String())
-    nameUser = graphene.List(Profile, name=graphene.String())
+    leader_board = graphene.List(Profile)
 
-    def resolve_locationUser(self, info, location=None, **kwargs):
+    def resolve_leader_board(self, info, **kwargs):
         u = info.context.user
         if u.is_anonymous:
             raise GraphQLError("Not Logged In!")
-        if location:
-            filter = (
-                Q(city__icontains=location) |
-                Q(state__icontains=location)
-            )
-        return UserProfile.objects.filter(filter)
-
-    def resolve_nameUser(self, info, name=None, **kwargs):
-        u = info.context.user
-        if u.is_anonymous:
-            raise GraphQLError("Not Logged In!")
-        if name:
-            filter = (
-                Q(name__icontains=name) 
-            )
-        return UserProfile.objects.filter(filter)
+        return UserProfile.objects.all().order_by("max_score")
 
     def resolve_me(self, info):
         u = info.context.user
@@ -57,11 +41,10 @@ class CreateUser(graphene.Mutation):
         password = graphene.String(required=True)
         email = graphene.String(required=True)
         name = graphene.String()
-        image = graphene.String()
         gender = graphene.String()
-        city = graphene.String()
-        state = graphene.String()
-        country = graphene.String()
+        age = graphene.Int()
+        weight = graphene.Int()
+        height = graphene.Int()
 
     def mutate(self, info, username, password, email, **kwargs):
         user = get_user_model()(
@@ -70,17 +53,11 @@ class CreateUser(graphene.Mutation):
         )
         user.set_password(password)
         user.save()
-        img = kwargs.get("image")
-        gen = kwargs.get("gender")
 
-        if img is None:
-            profile = UserProfile.objects.create(user=user, name=kwargs.get(
-                "name"), gender=gen, city=kwargs.get("city"), state=kwargs.get("state"), country=kwargs.get("country"))
-            profile.save()
-        else:
-            profile = UserProfile.objects.create(user=user, name=kwargs.get(
-                "name"), image=img, gender=gen, city=kwargs.get("city"), state=kwargs.get("state"), country=kwargs.get("country"))
-            profile.save()
+        profile = UserProfile.objects.create(user=user, name=kwargs.get(
+            "name"),  gender=kwargs.get("gender"), age=kwargs.get("age"), height=kwargs.get("height"), weight=kwargs.get("weight"))
+        profile.bmi = kwargs.get("weight")/pow(kwargs.get("height"), 2)
+        profile.save()
 
         return CreateUser(user=user)
 

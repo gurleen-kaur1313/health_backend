@@ -1,6 +1,7 @@
 from django.db import models
 import uuid
 from django.conf import settings
+from django.core.validators import MaxValueValidator, MinValueValidator
 # Create your models here.
 
 
@@ -22,9 +23,19 @@ class UserProfile(models.Model):
         null=True, blank=True, choices=gender_choices, max_length=6)
     image = models.URLField(
         null=True, default="https://firebasestorage.googleapis.com/v0/b/duo-louge.appspot.com/o/user_default.png?alt=media&token=a27eb92b-8292-4e0c-84d3-5db84b1b18d0")
-    city = models.CharField(max_length=255, blank=True, null=True)
-    state = models.CharField(max_length=255, blank=True, null=True)
-    country = models.CharField(max_length=255, blank=True, null=True)
+    age = models.IntegerField(default=1, validators=[
+                              MinValueValidator(1), MaxValueValidator(100)])
+    weight = models.IntegerField(validators=[
+        MinValueValidator(0)])
+    height = models.IntegerField(validators=[
+        MinValueValidator(0)])
+    bmi = models.DecimalField(default=0)
+    max_score = models.DecimalField(default=0, validators=[
+        MinValueValidator(0)])
+    game_life = models.IntegerField(default=3, validators=[
+        MinValueValidator(0)])
+    nutrition = models.IntegerField(
+        default=0, validators=[MinValueValidator(0)])
 
     def __str__(self):
         return self.user.email
