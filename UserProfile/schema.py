@@ -31,17 +31,17 @@ class Query(graphene.ObjectType):
             raise GraphQLError("Not Logged In!")
         return UserProfile.objects.all().order_by("-max_score")
 
-    def resolve_nutrition(self, info):
+    def resolve_me(self, info):
         u = info.context.user
         if u.is_anonymous:
             raise GraphQLError("Not Logged In!")
         return UserProfile.objects.get(user=u)
 
-    def resolve_me(self, info):
+    def resolve_nutrition(self, info):
         u = info.context.user
         if u.is_anonymous:
             raise GraphQLError("Not Logged In!")
-        return DailyNutritions.objects.get(user=u)
+        return DailyNutritions.objects.filter(user=u).order_by("Date")
 
 
 class CreateUser(graphene.Mutation):
