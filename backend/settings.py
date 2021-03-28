@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 from pathlib import Path
 import os
 import dj_database_url
+import corsheaders
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -31,6 +32,16 @@ DEBUG = os.environ.get("DEBUG", 'True')
 ALLOWED_HOSTS = [
     'localhost', 'veehacks-backend.herokuapp.com', '127.0.0.1:8000']
 
+CORS_ORIGIN_ALLOW_ALL = True
+
+CORS_ORIGIN_WHITELIST = (
+    'https://127.0.0.1',
+    'https://localhost',
+    'https://veehacks-backend.herokuapp.com',
+    'https://veehack-fun-fit.web.app',
+    'https://veehack-fun-fit.firebaseapp.com',
+)
+
 
 # Application definition
 
@@ -43,6 +54,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'graphene_django',
     'whitenoise.runserver_nostatic',
+    'corsheaders',
     'UserProfile',
 ]
 
@@ -53,10 +65,32 @@ GRAPHENE = {
     ],
 }
 
+CORS_ALLOW_METHODS = [
+    'DELETE',
+    'GET',
+    'OPTIONS',
+    'PATCH',
+    'POST',
+    'PUT',
+]
+
+CORS_ALLOW_HEADERS = [
+    'accept',
+    'accept-encoding',
+    'authorization',
+    'content-type',
+    'dnt',
+    'origin',
+    'user-agent',
+    'x-csrftoken',
+    'x-requested-with',
+]
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
