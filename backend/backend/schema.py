@@ -3,7 +3,7 @@ import graphql_jwt
 import UserProfile.schema
 
 
-class Query(UserProfile.schema.Query, graphene.ObjectType):
+class Query(UserProfile.schema.Query,Daily graphene.ObjectType):
     pass
 
 

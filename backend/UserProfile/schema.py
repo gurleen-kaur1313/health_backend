@@ -1,7 +1,7 @@
 import graphene
 from django.contrib.auth import get_user_model
 from graphene_django import DjangoObjectType
-from .models import UserProfile
+from .models import UserProfile, DailyNutritions
 from graphql import GraphQLError
 from django.db.models import Q
 
@@ -9,6 +9,10 @@ from django.db.models import Q
 class Profile(DjangoObjectType):
     class Meta:
         model = UserProfile
+
+class Nutrition(DjangoObjectType):
+    class Meta:
+        model = DailyNutritions
 
 
 class UserType(DjangoObjectType):
@@ -19,6 +23,7 @@ class UserType(DjangoObjectType):
 class Query(graphene.ObjectType):
     me = graphene.Field(Profile)
     leader_board = graphene.List(Profile)
+    nutrition = graphene.List(Nutrition)
 
     def resolve_leader_board(self, info, **kwargs):
         u = info.context.user
@@ -31,6 +36,12 @@ class Query(graphene.ObjectType):
         if u.is_anonymous:
             raise GraphQLError("Not Logged In!")
         return UserProfile.objects.get(user=u)
+
+    def resolve_me(self, info):
+        u = info.context.user
+        if u.is_anonymous:
+            raise GraphQLError("Not Logged In!")
+        return DailyNutritions.objects.get(user=u)
 
 
 class CreateUser(graphene.Mutation):
@@ -103,7 +114,37 @@ class DeleteUser(graphene.Mutation):
         return DeleteUser(user=str)
 
 
+
+class AddDailyNutrition(graphene.Mutation):
+    info = graphene.Field(Nutrition)
+
+    class Arguments:
+        protein = graphene.String()
+        carbs = graphene.String()
+        fats = graphene.String()
+        food_name = graphene.String()
+        
+
+
+    def mutate(self, info, **kwargs):
+        user = info.context.user
+        if user.is_anonymous:
+            raise GraphQLError("Not Logged In!")
+        new = DailyNutritions.objects.create(user=user)
+        new.protein = kwargs.get("protein")
+        new.carbs = kwargs.get("carbs")
+        new.fats = kwargs.get("fats")
+        new.food_name = kwargs.get("food_name")
+
+        new.save()
+
+        return AddDailyNutrition(info=new)
+
+
+
+
 class Mutation(graphene.ObjectType):
     create_user = CreateUser.Field()
     update_user = UpdateScore.Field()
     delete_user = DeleteUser.Field()
+    add_nutrition = AddDailyNutrition.Field()
